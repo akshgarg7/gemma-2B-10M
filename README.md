@@ -10,6 +10,7 @@ Gemma 2B with recurrent local attention with context length of up to 10M. Our im
 - Runs on less than 32GB of memory.
 - Native inference optimized for cuda.
 - Recurrent local attention for O(N) memory.
+- Updated to be compatible with MLX for optimization on Apple Silicon.
 
 ## Quick Start
 
@@ -47,6 +48,19 @@ with torch.no_grad():
     print(generated_text)
 ```
 
+## Updates for MLX Compatibility
+
+The `gemma.py` file has been updated to be compatible with MLX, optimized for Apple Silicon. The following changes have been made:
+
+- All tensor operations are now performed using MLX functions.
+- A custom caching strategy compatible with MLX's lazy evaluation model has been implemented.
+- The `use_cache` parameter has been integrated throughout the model to utilize the new caching mechanism.
+
+To use the updated `gemma.py` file:
+
+- Ensure MLX version 0.2.0 is installed.
+- Use the `use_cache` parameter to enable caching during inference for improved performance.
+
 ## How does this work?
 
 The largest bottleneck (in terms of memory) for LLMs is the KV cache. It grows quadratically in vanilla multi-head attention, thus limiting the size of your sequence length.
@@ -56,7 +70,8 @@ Our approach splits the attention in local attention blocks as outlined by [Infi
 A lot of the inspiration for our ideas comes from the [Transformer-XL](https://arxiv.org/abs/1901.02860) paper.
 
 ## More details
-For more context about our motivations, implementation details, and the theory behind the work, check out our technical overview on [medium](https://medium.com/@akshgarg_36829/gemma-10m-technical-overview-900adc4fbeeb). 
+
+For more context about our motivations, implementation details, and the theory behind the work, check out our technical overview on [medium](https://medium.com/@akshgarg_36829/gemma-10m-technical-overview-900adc4fbeeb).
 
 ## Credits
 
